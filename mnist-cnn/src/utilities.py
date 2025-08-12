@@ -145,3 +145,12 @@ def prediction_and_image(model, dataloader):
 
     model_output = np.argmax(probabilities)
     print(f"The image is of the digit (as recognized by our model): {model_output}")
+    print(f"The image is labelled as: {test_label} in the dataset.")
+
+# print the results
+def print_conclusion(model_name, losses, accuracies, test_loss, test_accuracy):
+    print(f"Model: {model_name}")
+    print(f"Loss(Training): {losses[-1]:.6f}")
+    print(f"Accuracy(Training): {accuracies[-1]:.6f}")
+    print(f"Loss(Testing): {test_loss:.6f}")
+    print(f"Accuracy(Testing): {test_accuracy:.6f}")
