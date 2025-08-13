@@ -154,3 +154,30 @@ def print_conclusion(model_name, losses, accuracies, test_loss, test_accuracy):
     print(f"Accuracy(Training): {accuracies[-1]:.6f}")
     print(f"Loss(Testing): {test_loss:.6f}")
     print(f"Accuracy(Testing): {test_accuracy:.6f}")
+
+def realworld_prediction(model, test_image_tensor):
+    test_image_tensor = test_image_tensor.to(device).unsqueeze(0)
+
+    # put the model in evaluation (inference) mode
+    model.eval()
+    predictions_test_image_tensor = model(test_image_tensor)
+    probabilities = torch.nn.functional.softmax(predictions_test_image_tensor, dim=1)
+    probabilities = probabilities.cpu().detach().numpy() #.cpu() to copy tensor to memory first
+
+
+    plt.Figure(figsize=(20,20))
+
+    plt.subplot(1,2,1)
+    classes = [i for i in range(10)]
+    x_values = classes
+    x_labels = [str(i) for i in x_values]
+    plt.bar([i for i in range(10)], probabilities[0])
+    plt.xticks(x_values, x_labels)
+
+    plt.subplot(1,2,2)
+    plt.imshow(test_image_tensor[0,0,:,:].cpu(), cmap=plt.cm.binary)
+    plt.xticks([])
+    plt.yticks([])
+
+    model_output = np.argmax(probabilities)
+    print(f"The image is of the digit (as recognized by our model): {model_output}")
