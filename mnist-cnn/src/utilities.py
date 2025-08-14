@@ -29,10 +29,10 @@ def train_model(model, dataloader, cost_function, optimizer, EPOCHS):
             images, labels = images.to(device), labels.to(device)
             # Forward pass
             outputs = model(images)
-            # Clear gradients (from previous steps)
-            optimizer.zero_grad()
             # compute cost function
             loss = cost_function(outputs, labels)
+            # Clear gradients (from previous steps)
+            optimizer.zero_grad()
             # Backpropogate
             loss.backward()
             optimizer.step()
